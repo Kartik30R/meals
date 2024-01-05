@@ -4,11 +4,11 @@ import 'package:meals/screens/meals_details.dart';
 import 'package:meals/widgets/meal_Item.dart';
 
 class MealsScreen extends StatelessWidget{
-  const MealsScreen({super.key,required this.title,required this.meals});
+  const MealsScreen({super.key,this.title,required this.meals,required this.ontoggleFavourite});
 
-  final String title;
+  final String? title;
   final List<Meal> meals;
-
+  final void Function(Meal meal ) ontoggleFavourite;
 
 
 void selectedMeal(BuildContext context,Meal meal) {
@@ -18,18 +18,13 @@ void selectedMeal(BuildContext context,Meal meal) {
         MaterialPageRoute(
 
             builder: (ctx) =>
-               MealDetails(meal: meal)));
+               MealDetails(meal: meal, ontoggleFavourite: (Meal meal) { ontoggleFavourite(meal); },)));
   }
 
 
   @override
   Widget build(BuildContext context) {
-    Widget content=ListView.builder(itemBuilder: (ctx,index)=>Text(
-      meals[index].title,
-    ));
-
-    if(meals.isEmpty){
-      content = Center(
+    Widget content=Center(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Text('Uh oh ... nothing here!' , style: Theme.of(context).textTheme.bodyLarge!.copyWith(
             color: Theme.of(context).colorScheme.onBackground,
@@ -41,13 +36,20 @@ void selectedMeal(BuildContext context,Meal meal) {
 
         ],),
       );
+    if(meals.isNotEmpty){
+     content =  ListView.builder(
+      itemCount: meals.length,
+      itemBuilder: (ctx,index)=>MealItem(meal: meals[index], selectmeal: (){selectedMeal( context, meals[index]);}));
     }
+
+    if (title==null){
+      return content;
+    }
+
   return Scaffold(
     appBar: AppBar(
-      title: Text(title),
+      title: Text(title!),
     ),
-    body: ListView.builder(
-      itemCount: meals.length,
-      itemBuilder: (ctx,index)=>MealItem(meal: meals[index], selectmeal: (){selectedMeal( context, meals[index]);})),
+    body:content
   );
   }}
