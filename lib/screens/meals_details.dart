@@ -1,23 +1,40 @@
-import 'package:flutter/material.dart';
-import 'package:meals/models/meal.dart';
+// ignore_for_file: subtype_of_sealed_class
 
-class MealDetails extends StatelessWidget {
-  const MealDetails({super.key, required this.meal, required this.ontoggleFavourite});
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals/models/meal.dart';
+import 'package:meals/provider/favorites_provider.dart';
+
+class MealDetails extends ConsumerWidget {
+  const MealDetails({
+    super.key,
+    required this.meal,
+  }) ;
 
   final Meal meal;
-  final void Function(Meal meal ) ontoggleFavourite;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(onPressed: (){ontoggleFavourite(meal);}, icon: Icon(Icons.star))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                final wasAdded=ref
+                    .read(favoriteMealsProvider.notifier)
+                    .toggleMealFavouriteStatus(meal);
+                     ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(wasAdded ? 'Meal Added' : 'meal removed')),
+    );
+              },
+              icon: Icon(Icons.star))
+        ],
         title: Text(meal.title),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Align(
@@ -26,29 +43,37 @@ class MealDetails extends StatelessWidget {
                     width: double.infinity,
                     height: 400,
                     decoration: BoxDecoration(
-                        image: DecorationImage(fit: BoxFit.cover,image: NetworkImage(meal.imageUrl)))),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(meal.imageUrl)))),
               ),
-              const SizedBox(height: 24,),
-               Text('Ingredients' ,style:Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold
-              )),
-              const SizedBox(height: 8,),
-              for(final ingredients in meal.ingredients)
-                Text(ingredients
-              , style:Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,)),
-                  Text('Steps' ,style:Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold
-              )),
-              const SizedBox(height: 8,),
-              for(final steps in meal.steps)
-                Text(steps
-              , style:Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,))
-          
-            
+              const SizedBox(
+                height: 24,
+              ),
+              Text('Ingredients',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 8,
+              ),
+              for (final ingredients in meal.ingredients)
+                Text(ingredients,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )),
+              Text('Steps',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 8,
+              ),
+              for (final steps in meal.steps)
+                Text(steps,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ))
             ],
           ),
         ),
