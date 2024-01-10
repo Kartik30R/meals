@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/provider/favorites_provider.dart';
+import 'package:meals/provider/filter_provider.dart';
 
-import 'package:meals/provider/meals_providers.dart';
 import 'package:meals/screens/Filter.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/main_drawer.dart';
@@ -24,7 +24,7 @@ class TabsScreen extends ConsumerStatefulWidget {
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
-  Map<Filter, bool> _selectedFilter = kIntialFilter;
+ 
 
   
 
@@ -39,34 +39,17 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void _setScreen(String indentifier) async {
     Navigator.pop(context);
     if (indentifier == 'filter') {
-      final result = await Navigator.push<Map<Filter, bool>>(
-          context, MaterialPageRoute(builder: (ctx) => FilterScreen(currentFilters:_selectedFilter)));
+       await Navigator.push<Map<Filter, bool>>(
+          context, MaterialPageRoute(builder: (ctx) => const FilterScreen()));
 
-      setState(() {
-        _selectedFilter = result ?? kIntialFilter;
-      });
+   
     }
   }
 
   @override
   Widget build(BuildContext context) {
-final meals = ref.watch(mealsProvider);
 
-    final  availableMeals = meals.where((element) {
-      if (_selectedFilter[Filter.glutenfree]! && !element.isGlutenFree) {
-        return false;
-      }
-      if (_selectedFilter[Filter.glutenfree]! && !element.isGlutenFree) {
-        return false;
-      }
-      if (_selectedFilter[Filter.glutenfree]! && !element.isGlutenFree) {
-        return false;
-      }
-      if (_selectedFilter[Filter.glutenfree]! && !element.isGlutenFree) {
-        return false;
-      }
-      return true;
-    }).toList();
+    final  availableMeals =ref.watch(filteredMealsProvider);
 
     Widget activePage = CategoriesScreen(
     AvailableMeals: availableMeals,

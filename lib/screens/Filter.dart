@@ -1,143 +1,205 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+//  import 'package:meals/provider/filter_provider.dart';
  
 
- enum Filter {
-  glutenfree,lactosefree,vegetarian,vegan
- }
-class FilterScreen extends StatefulWidget {
-  const FilterScreen({super.key, required this.currentFilters});
 
-   final Map<Filter,bool> currentFilters;
+// class FilterScreen extends ConsumerWidget {
+//   const FilterScreen({super.key});
 
-  @override
-  State<FilterScreen> createState() => _FilterScreenState();
-}
-
-class _FilterScreenState extends State<FilterScreen> {
-var _glutenFreeFilterSet=false;
-var _lactoseFreeFilterSet=false;
-var _vegetarianFreeFilterSet=false;
-var _veganFilterSet=false;
-
-@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    _glutenFreeFilterSet = widget.currentFilters[Filter.glutenfree]!;
-      _lactoseFreeFilterSet = widget.currentFilters[Filter.lactosefree]!;
-      _vegetarianFreeFilterSet = widget.currentFilters[Filter.vegetarian]!;
-      _veganFilterSet = widget.currentFilters[Filter.vegan]!;
-
-  }
-  @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        title: Text('your filters'),
-      ),
-      // ignore: deprecated_member_use
-      body: WillPopScope(
-        onWillPop: ()  async{
-          Navigator.of(context).pop(
-            {
-              Filter.glutenfree:_glutenFreeFilterSet,
-              Filter.lactosefree:_lactoseFreeFilterSet,
-              Filter.vegetarian:_vegetarianFreeFilterSet,
-              Filter.vegan:_veganFilterSet
-
-            }
-          );
-
-          return false;
-        },
-        child: Column(
-          children: [
-            SwitchListTile(
-              value: _glutenFreeFilterSet,
-              onChanged: (isChecked){
-                setState(() {
-                  _glutenFreeFilterSet=isChecked;
-                });
-              },
-              title: Text(
-                'GLuten _free ',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
-              subtitle: Text('Only include gluten free ',
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      )),
-              activeColor: Theme.of(context).colorScheme.tertiary,
-              contentPadding: EdgeInsets.only(left: 34, right: 22),
-            ),
-            SwitchListTile(
-              value: _lactoseFreeFilterSet,
-              onChanged: (isChecked){
-                setState(() {
-                  _lactoseFreeFilterSet=isChecked;
-                });
-              },
-              title: Text(
-                'Lactose_free ',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
-              subtitle: Text('Only include Lactose free ',
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      )),
-              activeColor: Theme.of(context).colorScheme.tertiary,
-              contentPadding: EdgeInsets.only(left: 34, right: 22),
-            ),
-            SwitchListTile(
-              value: _vegetarianFreeFilterSet,
-              onChanged: (isChecked){
-                setState(() {
-                  _vegetarianFreeFilterSet=isChecked;
-                });
-              },
-              title: Text(
-                'vegetarian_free ',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
-              subtitle: Text('Only include vegetarian free ',
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      )),
-              activeColor: Theme.of(context).colorScheme.tertiary,
-              contentPadding: EdgeInsets.only(left: 34, right: 22),
-            ),
-            SwitchListTile(
-              value: _veganFilterSet,
-              onChanged: (isChecked){
-                setState(() {
-                  _veganFilterSet=isChecked;
-                });
-              },
-              title: Text(
-                'vegan_free ',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
-              subtitle: Text('Only include vegan free ',
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      )),
-              activeColor: Theme.of(context).colorScheme.tertiary,
-              contentPadding: EdgeInsets.only(left: 34, right: 22),
-            ),
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final activeFilter =ref.watch(filterProvider);
+//     return  Scaffold(
+//       appBar: AppBar(
+//         title: Text('your filters'),
+//       ),
+//       // ignore: deprecated_member_use
+//       body:Column(
+//           children: [
+//             SwitchListTile(
+//               value: activeFilter[Filter.glutenfree],
+//               onChanged: (isChecked){
+//               ref.read(filterProvider.notifier).setFilter(Filter.glutenfree, isChecked)
+//                 });
+              
+//               title: Text(
+//                 'GLuten _free ',
+//                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                       color: Theme.of(context).colorScheme.onBackground,
+//                     ),
+//               ),
+//               subtitle: Text('Only include gluten free ',
+//                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                         color: Theme.of(context).colorScheme.onBackground,
+//                       )),
+//               activeColor: Theme.of(context).colorScheme.tertiary,
+//               contentPadding: EdgeInsets.only(left: 34, right: 22),
+//             ),
+//             SwitchListTile(
+//                 value: activeFilter[Filter.lactosefree],
+//               onChanged: (isChecked){
+//               ref.read(filterProvider.notifier).setFilter(Filter.lactosefree, isChecked)
+//                 });
+//               },
+//               title: Text(
+//                 'Lactose_free ',
+//                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                       color: Theme.of(context).colorScheme.onBackground,
+//                     ),
+//               ),
+//               subtitle: Text('Only include Lactose free ',
+//                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                         color: Theme.of(context).colorScheme.onBackground,
+//                       )),
+//               activeColor: Theme.of(context).colorScheme.tertiary,
+//               contentPadding: EdgeInsets.only(left: 34, right: 22),
+//             ),
+//             SwitchListTile(
+//                  value: activeFilter[Filter.vegetarian],
+//               onChanged: (isChecked){
+//               ref.read(filterProvider.notifier).setFilter(Filter.vegetarian, isChecked)
+//                 });
+//               },
+//               title: Text(
+//                 'vegetarian_free ',
+//                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                       color: Theme.of(context).colorScheme.onBackground,
+//                     ),
+//               ),
+//               subtitle: Text('Only include vegetarian free ',
+//                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                         color: Theme.of(context).colorScheme.onBackground,
+//                       )),
+//               activeColor: Theme.of(context).colorScheme.tertiary,
+//               contentPadding: EdgeInsets.only(left: 34, right: 22),
+//             ),
+//             SwitchListTile(
+//                  value: activeFilter[Filter.vegan],
+//               onChanged: (isChecked){
+//               ref.read(filterProvider.notifier).setFilter(Filter.vegan, isChecked)
+//                 });
+//               },
+//               title: Text(
+//                 'vegan_free ',
+//                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                       color: Theme.of(context).colorScheme.onBackground,
+//                     ),
+//               ),
+//               subtitle: Text('Only include vegan free ',
+//                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
+//                         color: Theme.of(context).colorScheme.onBackground,
+//                       )),
+//               activeColor: Theme.of(context).colorScheme.tertiary,
+//               contentPadding: EdgeInsets.only(left: 34, right: 22),
+//             ),
             
-          ],
-        ),
+//           ],
+//         );
+      
+    
+//   }
+// }
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals/provider/filter_provider.dart';
+
+class FilterScreen extends ConsumerWidget {
+  const FilterScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final activeFilter = ref.watch(filterProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Your Filters'),
+      ),
+      body: Column(
+        children: [
+          SwitchListTile(
+            value: activeFilter[Filter.glutenfree] ?? false,
+            onChanged: (isChecked) {
+              ref.read(filterProvider.notifier).setFilter(Filter.glutenfree, isChecked);
+            },
+            title: Text(
+              'GLuten _free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            subtitle: Text(
+              'Only include gluten free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            activeColor: Theme.of(context).colorScheme.tertiary,
+            contentPadding: EdgeInsets.only(left: 34, right: 22),
+          ),
+          SwitchListTile(
+            value: activeFilter[Filter.lactosefree] ?? false,
+            onChanged: (isChecked) {
+              ref.read(filterProvider.notifier).setFilter(Filter.lactosefree, isChecked);
+            },
+            title: Text(
+              'Lactose_free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            subtitle: Text(
+              'Only include Lactose free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            activeColor: Theme.of(context).colorScheme.tertiary,
+            contentPadding: EdgeInsets.only(left: 34, right: 22),
+          ),
+          SwitchListTile(
+            value: activeFilter[Filter.vegetarian] ?? false,
+            onChanged: (isChecked) {
+              ref.read(filterProvider.notifier).setFilter(Filter.vegetarian, isChecked);
+            },
+            title: Text(
+              'vegetarian_free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            subtitle: Text(
+              'Only include vegetarian free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            activeColor: Theme.of(context).colorScheme.tertiary,
+            contentPadding: EdgeInsets.only(left: 34, right: 22),
+          ),
+          SwitchListTile(
+            value: activeFilter[Filter.vegan] ?? false,
+            onChanged: (isChecked) {
+              ref.read(filterProvider.notifier).setFilter(Filter.vegan, isChecked);
+            },
+            title: Text(
+              'vegan_free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            subtitle: Text(
+              'Only include vegan free ',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            activeColor: Theme.of(context).colorScheme.tertiary,
+            contentPadding: EdgeInsets.only(left: 34, right: 22),
+          ),
+        ],
       ),
     );
   }
 }
-
